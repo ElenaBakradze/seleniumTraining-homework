@@ -1,6 +1,7 @@
 package training.tests;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -91,5 +92,55 @@ public class TestBase {
         WebElement element = getDriver().findElement(locator);
         // кликаем по элементу
         element.click();
+    }
+
+    /**
+     * Проверка присутствия элемента на странице
+     *
+     * @param locator
+     *          адрес элемента
+     */
+    boolean isElementPresent(By locator) {
+        try {
+            getDriver().findElement(locator);
+            return true;
+        } catch (NoSuchElementException ex) {
+            return false;
+        }
+    }
+
+    // линк страницы панели администрирования учебного приложения
+    private final String link = "http://localhost/litecart/admin/";
+    // имя кнопки Login
+    private final String btnLoginName = "login";
+    // имя поля для ввода логина
+    private final String fieldLogin = "username";
+    // имя поля для ввода пароля
+    private final String fieldPass = "password";
+    // имя поля для ввода пароля
+    private final String btnLogout = "//a[@title='Logout']";
+    // логин и пароль администратора
+    protected final String loginPass = "admin";
+
+
+    /**
+     * Логин в панель администрирования учебного приложения
+     *
+     * @param user
+     *          пользователь
+     * @param pass
+     *          пароль
+     */
+    public void loginInStore(String user, String pass) {
+        // открываем страницу в браузере
+        getDriver().navigate().to(link);
+        // Ждем, пока отобразится поле ввода логина и вводим логин
+        enterText(By.name(fieldLogin), user);
+        // Ждем, пока отобразится поле ввода пароля и вводим пароль
+        enterText(By.name(fieldPass), pass);
+        // Ждем, пока отобразится кнопка Login и нажимаем кнопку
+        clickOnElement(By.name(btnLoginName));
+        // Ждем, пока отобразится кнопка выхода (Logout)
+        waitDisplayedElement(By.xpath(btnLogout));
     }
 }
