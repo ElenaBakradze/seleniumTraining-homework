@@ -3,6 +3,7 @@ package training.tests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class TrainingTest003 extends TestBase{
             // кликаем на пункт меню
             clickOnElement(By.xpath("//li[@id='app-'][" + i + "]"));
             // Проверяем наличие заголовка(то есть элемента с тегом h1)
-            isElementPresent(By.cssSelector("td#content h1"));
+            Assert.assertTrue(isElementPresent(By.cssSelector("td#content h1")));
             // Если есть подменю, то кликаем и по его пунктам
             if (isElementPresent(By.className("docs"))) {
                 // Cписок пунктов в подменю
@@ -31,7 +32,7 @@ public class TrainingTest003 extends TestBase{
                     // кликаем на пункт подменю
                     clickOnElement(By.xpath("//ul[@class='docs']/li[" + j + "]"));
                     // Проверяем наличие заголовка
-                    isElementPresent(By.cssSelector("td#content h1"));
+                    Assert.assertTrue(isElementPresent(By.cssSelector("td#content h1")));
                 }
             }
         }
