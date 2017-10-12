@@ -5,6 +5,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -89,6 +90,40 @@ public class TestBase {
         WebDriverWait wait = new WebDriverWait(getDriver(), 10);
         wait.until(ExpectedConditions.stalenessOf(element));
     }
+
+
+    /**
+     * Ожидание открытия нового окна
+     *
+     * @param openWindows
+     *          уже открытые окна
+     *
+     * @return {@link String}
+     */
+    public String waitAnyWindowOtherThan(Set<String> openWindows) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), 10);
+        return wait.until(anyWindowOtherThan(openWindows));
+    }
+
+    /**
+     * Новое окно
+     *
+     * @param openWindows
+     *          уже открытые окна
+     *
+     * @return {@link String}
+     */
+     public ExpectedCondition<String> anyWindowOtherThan(Set<String> openWindows) {
+         return new ExpectedCondition<String>(){
+             public String apply(WebDriver driver) {
+                 Set<String> handles = driver.getWindowHandles();
+                 handles.removeAll(openWindows);
+                 return handles.size() > 0 ? handles.iterator().next() : null;
+             }
+         };
+     }
+
+
 
     /**
      * Ввод текста в поле
