@@ -5,6 +5,10 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -14,7 +18,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import java.text.SimpleDateFormat;
+
 import java.util.*;
+import java.util.logging.Level;
 
 import static java.lang.Math.abs;
 
@@ -47,7 +53,14 @@ public class TestBase {
 
     @BeforeClass
     public void start() {
-        setDriver(new ChromeDriver());
+        // Включаем все уровни логгирования в консоли браузера
+        LoggingPreferences logs = new LoggingPreferences();
+        logs.enable(LogType.BROWSER, Level.ALL);
+
+        DesiredCapabilities desiredCapabilities = DesiredCapabilities.chrome();
+        desiredCapabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
+
+        setDriver(new ChromeDriver(desiredCapabilities));
     }
 
     @AfterClass
